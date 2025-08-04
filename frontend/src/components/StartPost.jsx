@@ -1,20 +1,51 @@
+/* eslint-disable no-unused-vars */
 import { useRef } from "react"
 import toast from "react-hot-toast";
-
-export default function StartPost(){
+import axios from "axios";
+export default function StartPost({authorName , setPosts }){
 
     const inputRef = useRef(null);
 
-    function handlePost(){
+    async function handlePost(){
 
         if(inputRef.current?.value.trim() == ""){
             toast.error("Post can't be empty");
             return;
         }
 
+        try{    
+
+            const token = localStorage.getItem('token');
+            const payload = {
+                authorName,
+                text: inputRef.current.value
+            }
+            const response = await axios.post(`http://localhost:3000/posts/submit` , payload , {
+                headers:{
+                    Authorization: token
+                }
+            });
+
+            toast.success("Posted Successfully");
+            inputRef.current.value = "";
+             const formattedDate = new Date(response.data.created_at).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    });
+            const newItem = {
+                authorName: response.data.author_name,
+                text: response.data.text,
+                createdAt: formattedDate
+            }
+            setPosts(prev => [ newItem , ...prev])
+
+        }catch(err){
+            toast.error(`${err.response.data.msg}`);
+        }
 
 
-        
+
     }
     return <div className="flex flex-col p-2 border border-gray-400 rounded-md w-1/2 items-center bg-white">
 

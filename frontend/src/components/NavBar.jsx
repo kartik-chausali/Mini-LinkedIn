@@ -3,12 +3,10 @@
 import Avatar from 'react-avatar';
 import { useLocation, useNavigate } from "react-router-dom";
 
-export default function NavBar(){
+export default function NavBar({name , u_id}){
 
     const navigate = useNavigate();
-    const location = useLocation();
-    const {name , u_id} = location.state 
-    console.log(name , u_id)
+   
     function handleLogout(){
         localStorage.removeItem('token');
         navigate('/signin');
