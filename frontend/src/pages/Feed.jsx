@@ -4,6 +4,7 @@ import StartPost from "../components/StartPost";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import Post from "../components/Post";
+import { Skeleton } from "../components/animation/Skeleton";
 export default function Feed(){
 
      const location = useLocation();
@@ -14,6 +15,8 @@ export default function Feed(){
         text:"",
         createdAt:""
     }]);
+    const [loading , setLoading] = useState(true);
+
     useEffect(()=>{
         (async()=>{
             const token = localStorage.getItem('token')
@@ -35,12 +38,15 @@ export default function Feed(){
                     createdAt: formattedDate
             }
             });
-            console.log("posts", trimmedPosts)
             setPosts(trimmedPosts);
+            setLoading(false);
         })();
     }, [])
 
     // console.log("posts", posts)
+    if(loading){
+        return  <Skeleton/>
+    }
     return <>
     <NavBar name={name} u_id={u_id}/>
     <div className="flex flex-col justify-center items-center gap-2">

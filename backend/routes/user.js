@@ -4,7 +4,8 @@ const jwt = require('jsonwebtoken');
 const secret = "secret"
 const pool = require('../db/pool');
 const z = require('zod')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
+const authenticateToken = require('../middleware/auth');
 const salt = 10;
 
 const User = z.object({
@@ -81,5 +82,42 @@ router.post('/signin' , async(req, res)=>{
        return res.status(402).json({msg: "Error while signin" , err});
     }
 })
+
+router.post('/me', authenticateToken, async (req, res) => {
+  const { u_id } = req.body;
+
+  if (!u_id) {
+    return res.status(400).json({ msg: "Missing u_id" });
+  }
+
+  try {
+    const userResult = await pool.query(
+      `SELECT name, password , bio , email FROM users WHERE u_id = $1`,
+      [u_id]
+    );
+
+    if (userResult.rows.length === 0) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+
+    const postResult = await pool.query(
+      `SELECT post_id, text, created_at FROM posts WHERE u_id = $1 ORDER BY created_at DESC`,
+      [u_id]
+    );
+
+    return res.status(200).json({
+      name: userResult.rows[0].name,
+      password: userResult.rows[0].password,
+      bio:userResult.rows[0].bio,
+      email: userResult.rows[0].email,
+      posts: postResult.rows
+    });
+
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ msg: "Server error", error: err });
+  }
+});
+
 
 module.exports = router
