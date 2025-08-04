@@ -27,18 +27,15 @@ export const Auth = ({type})=>{
 
     async function sendRequest(){
         try{
-            // setLoading(true);
-            // const response = await axios.post(`${BACKEND_URL}/api/v1/user/${type === 'signup'? 'signup':'signin'}`, inputs)
-            // const jwt = response.data.jwt;
-            // localStorage.setItem('token', jwt);
             
             const payload = type == 'signup' ? inputs : {email: inputs.email , password: inputs.password}
-            const response = await axios.post(`http://localhost:3000/users/${type == 'signup' ? 'signup' : 'signin'}` , payload);
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/users/${type == 'signup' ? 'signup' : 'signin'}` , payload);
             localStorage.setItem('token' , response.data.jwt);
             const data = {
                 u_id: response.data.u_id,
                 name: response.data.name
             }
+
             toast.success(type === 'signup' ? "Signed up successfully" : "Logged in successfully" );
             navigate('/feed' , {state: data} );
         }catch(err ){

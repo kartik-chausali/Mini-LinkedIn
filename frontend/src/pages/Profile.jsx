@@ -23,12 +23,12 @@ export default function Profile(){
      const buttonTextRef = useRef(null)
 
      useEffect(() => {
-        console.log('inside effect')
+       
     async function fetchProfile() {
       try {
         const token = localStorage.getItem('token');
         const response = await axios.post(
-          'http://localhost:3000/users/me',
+          `${import.meta.env.VITE_BACKEND_URL}/users/me`,
           { u_id: u_id },
           {
             headers: {

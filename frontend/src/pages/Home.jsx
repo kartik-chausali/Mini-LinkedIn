@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom"
-// import { TypingAnimation } from "../components/animation/TypingAnimation"
+
 
  const Home = ()=>{
     return <div className="h-screen bg-slate-100">
         
-        {/* <TypingAnimation height={"1/2"}/> */}
+       
         <div className="flex justify-center p-2">
         <p className="font-semibold text-lg rounded-md text-black">Connect with Professionals around the world and grow your network</p>
         </div>

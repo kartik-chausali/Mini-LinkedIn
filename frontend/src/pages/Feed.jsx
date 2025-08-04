@@ -20,7 +20,7 @@ export default function Feed(){
     useEffect(()=>{
         (async()=>{
             const token = localStorage.getItem('token')
-            const response = await axios.get('http://localhost:3000/posts/allPosts', {
+            const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/posts/allPosts`, {
                 headers: {
                     Authorization: token
                 }

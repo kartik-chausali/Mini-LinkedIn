@@ -20,7 +20,7 @@ export default function StartPost({authorName , setPosts }){
                 authorName,
                 text: inputRef.current.value
             }
-            const response = await axios.post(`http://localhost:3000/posts/submit` , payload , {
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/posts/submit` , payload , {
                 headers:{
                     Authorization: token
                 }
