@@ -37,8 +37,8 @@ This is a secure application built with **Node.js**, **Express.js**, and **Postg
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/your-username/your-repo.git
-cd your-repo
+git clone git@github.com:kartik-chausali/Mini-LinkedIn.git
+cd Mini-LinkedIn
 ```
 ### 2. Install Dependencies
 
